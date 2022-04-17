@@ -25,14 +25,18 @@ const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, 
 
 module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
     try {
-        var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
-        var budy = (typeof m.text == 'string' ? m.text : '')
-        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
+        const type = Object.keys(m.message)[0]
+        const cmd = (type === 'conversation' && m.message.conversation) ? m.message.conversation : (type == 'imageMessage') && m.message.imageMessage.caption ? m.message.imageMessage.caption : (type == 'documentMessage') && m.message.documentMessage.caption ? m.message.documentMessage.caption : (type == 'videoMessage') && m.message.videoMessage.caption ? m.message.videoMessage.caption : (type == 'extendedTextMessage') && m.message.extendedTextMessage.text ? m.message.extendedTextMessage.text : (type == 'buttonsResponseMessage' && m.message.buttonsResponseMessage.selectedButtonId) ? m.message.buttonsResponseMessage.selectedButtonId : (type == 'templateButtonReplyMessage') && m.message.templateButtonReplyMessage.selectedId ? m.message.templateButtonReplyMessage.selectedId : (type === 'listResponseMessage' && m.message.listResponseMessage.title) ? m.message.listResponseMessage.title : ""
+        var prefix = /^[.^]/.test(cmd) ? cmd.match(/^[.^]/gi) : '.'
+        const body = (type === 'listResponseMessage' && m.message.listResponseMessage.title) ? m.message.listResponseMessage.title : (type === 'buttonsResponseMessage' && m.message.buttonsResponseMessage.selectedButtonId) ? m.message.buttonsResponseMessage.selectedButtonId : (type === 'conversation' && m.message.conversation.startsWith(prefix)) ? m.message.conversation : (type == 'imageMessage') && m.message.imageMessage.caption.startsWith(prefix) ? m.message.imageMessage.caption : (type == 'videoMessage') && m.message.videoMessage.caption.startsWith(prefix) ? m.message.videoMessage.caption : (type == 'extendedTextMessage') && m.message.extendedTextMessage.text.startsWith(prefix) ? m.message.extendedTextMessage.text : ""
+		const budy = (type === 'conversation') ? m.message.conversation : (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : ''
         const isCmd = body.startsWith(prefix)
-        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
+        const from = m.key.remoteJid
+        const command = body.startsWith(prefix) && body.replace(prefix, '').trim().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
         const pushname = m.pushName || "No Name"
-        const botNumber = await hisoka.decodeJid(hisoka.user.id)
+        const botNumber = await cafnay.decodeJid(cafnay.user.id)
+        const isGroup = m.key.remoteJid.endsWith('@g.us')
         const isCreator = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         const itsMe = m.sender == botNumber ? true : false
         const text = q = args.join(" ")
@@ -150,6 +154,19 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
         hisoka.ev.emit('messages.upsert', msg)
         }
 	        switch(command) {
+//CAF-ID
+case 'report': case 'lapor': {
+let _msg = q ? q : m.quoted.fakeObj
+if (!_msg) throw `Masukkan Laporan Atau Balas Pesan Error Bot Nya.`
+   for (let caf of global.owner) {
+     if(m.quoted.isBaileys) {
+     if(m.quoted.text.toLowerCase().includes('error')) throw 'Anda Tidak Membalas Pesan Error'
+     hisoka.relayMessage(caf, quoted.fakeObj.message, m.id)
+     } else { hisoka.sendMessage(caf, {text: q}) }
+   }
+}
+break
+	        
             case 'unblock': {
 		if (!isCreator) throw mess.owner
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
@@ -196,7 +213,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
 		m.reply('Sukses Broadcast')
             }
             break
-            case 'help': { 
+            case 'help': case 'menu': { 
                m.reply('Cara Menggunakan Bot\n.search(mencari partner)\n.next(mencari partner baru)\n.leave(keluar dari percakapan)')
             }
             break
@@ -229,7 +246,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
             case 'mulai': case 'caripartner': case 'search': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
                 global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
-                if (Object.values(global.db.data.anonymous).find(room => room.check(m.sender))) {
+                if (Object.values(db.data.anonymous).find(room => room.check(m.sender))) {
                     let buttons = [
                         { buttonId: 'leave', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
@@ -350,8 +367,8 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
                 }
 			
 		if (m.chat.endsWith('@s.whatsapp.net') && isCmd) {
-                    global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
-                    let room = Object.values(global.db.data.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
+                    db.data.anonymous = db.data.anonymous ? db.data.anonymous : {}
+                    let room = Object.values(db.data.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
                     if (room) {
                         if (/^.*(next|leave|start)/.test(m.text)) return
                         if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return
