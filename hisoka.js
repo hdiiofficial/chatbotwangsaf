@@ -134,7 +134,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
         if (isMedia && m.msg.fileSha256 && (m.msg.fileSha256.toString('base64') in global.db.data.sticker)) {
         let hash = global.db.data.sticker[m.msg.fileSha256.toString('base64')]
         let { text, mentionedJid } = hash
-        let messages = await generateWAMessage(m.chat, { text: text, mentions: mentionedJid }, {
+        let messages =  generateWAMessage(m.chat, { text: text, mentions: mentionedJid }, {
             userJid: hisoka.user.id,
             quoted: m.quoted && m.quoted.fakeObj
         })
@@ -201,9 +201,16 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
             }
             break
             case 'report': {
+             if (!q) return m.reply(`Masukan reason\nContoh: .report 18+`)
+             m.reply('Pesan Telah Dikirim Ke Owner,Jika anda melaporkan pesan main2 maka anda bisa kami ban')
+             let reason = `#REPORT\n\n${q}`
              for (let i of global.nohadi)  {
-              hisoka.sendMessage(i, {text: q})
+              hisoka.sendMessage(i, {text: reason})
              }
+             }
+             break
+             case 'donate': case 'donasi': {
+             m.reply(`jika anda ingin berdonasi silahkan hubungi wa.me/+6285701399751`)
              }
              break
 	     case 'start': case 'anonymous': {
@@ -212,7 +219,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
 				let buttons = [
                     { buttonId: 'search', buttonText: { displayText: 'Start' }, type: 1 }
                 ]
-                hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nAnonymous Ini Sama seperti Anonymous Chat Yang Ada Di Telegram\nAnonymous Chat Ini Dibuat Untuk Pengguna Whatsapp\nKlik Button Dibawah Ini Untuk Mencari Partner Anda\n\nJoin Telegram Support Agar lebih paham[t.me/wangsafsupport]\`\`\``, hisoka.user.name, m)
+                hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nAnonymous Ini Sama seperti Anonymous Chat Yang Ada Di Telegram\nAnonymous Chat Ini Dibuat Untuk Pengguna Whatsapp\nKlik Button Dibawah Ini Untuk Mencari Partner Anda\n\nJoin Telegram Support Agar lebih paham[t.me/wangsafsupport]\`\`\``, hisoka.user.name, fvideo)
             }
 			break
             case 'leave': {
@@ -285,7 +292,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
                     throw false
                 }
                 let other = romeo.other(m.sender)
-                if (other) await hisoka.sendText(other, `\`\`\`Partner Telah Meninggalkan Sesi Anonymous\`\`\``, m)
+                if (other) await hisoka.sendText(other, `\`\`\`Partner Telah Meninggalkan Sesi Anonymous\nketik .search untuk mencari partner\`\`\``, m)
                 delete global.db.data.anonymous[romeo.id]
                 let room = Object.values(global.db.data.anonymous).find(room => room.state === 'WAITING' && !room.check(m.sender))
                 if (room) {
