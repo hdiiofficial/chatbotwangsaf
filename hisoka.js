@@ -250,7 +250,7 @@ break
             case 'mulai': case 'caripartner': case 'search': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
                 global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
-                if (Object.values(db.data.anonymous).find(room => room.check(m.sender))) {
+                if (Object.values(global.db.data.anonymous).find(room => room.check(m.sender))) {
                     let buttons = [
                         { buttonId: 'leave', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
