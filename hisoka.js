@@ -35,7 +35,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
         const command = body.startsWith(prefix) && body.replace(prefix, '').trim().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
         const pushname = m.pushName || "No Name"
-        const botNumber = await cafnay.decodeJid(cafnay.user.id)
+        const botNumber = await hisoka.decodeJid(hisoka.user.id)
         const isGroup = m.key.remoteJid.endsWith('@g.us')
         const isCreator = [botNumber, ...global.owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
         const itsMe = m.sender == botNumber ? true : false
@@ -156,14 +156,18 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
 	        switch(command) {
 //CAF-ID
 case 'report': case 'lapor': {
-let _msg = q ? q : m.quoted.fakeObj
-if (!_msg) throw `Masukkan Laporan Atau Balas Pesan Error Bot Nya.`
-   for (let caf of global.owner) {
-     if(m.quoted.isBaileys) {
-     if(m.quoted.text.toLowerCase().includes('error')) throw 'Anda Tidak Membalas Pesan Error'
-     hisoka.relayMessage(caf, quoted.fakeObj.message, m.id)
-     } else { hisoka.sendMessage(caf, {text: q}) }
-   }
+if (!_msg || !m.quoted) throw `Masukkan Laporan Atau Balas Pesan Error Bot Nya.`
+if(m.quoted) {
+if(!m.quoted.isBaileys) throw 'Hanya Bisa Membalas Pesan Bot'
+if(m.quoted.text.toLowerCase().includes('error')) throw 'Anda Tidak Membalas Pesan Error'
+  for (let i of owner) {
+     hisoka.copyNForward(i, quoted.fakeObj)
+  }
+} else { 
+  for (let caf of owner) {
+  hisoka.sendMessage(caf, {text: q}) 
+  }
+}
 }
 break
 	        
