@@ -204,7 +204,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
              if (!q) return m.reply(`Masukan reason\nContoh: .report 18+`)
              m.reply('Pesan Telah Dikirim Ke Owner,Jika anda melaporkan pesan main2 maka anda bisa kami ban')
              let reason = `#REPORT\n\n${q}`
-             for (let i of global.nohadi)  {
+             for (let i of global.owner)  {
               hisoka.sendMessage(i, {text: reason})
              }
              }
