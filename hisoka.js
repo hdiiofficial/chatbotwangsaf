@@ -134,7 +134,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
         if (isMedia && m.msg.fileSha256 && (m.msg.fileSha256.toString('base64') in global.db.data.sticker)) {
         let hash = global.db.data.sticker[m.msg.fileSha256.toString('base64')]
         let { text, mentionedJid } = hash
-        let messages =  generateWAMessage(m.chat, { text: text, mentions: mentionedJid }, {
+        let messages = await generateWAMessage(m.chat, { text: text, mentions: mentionedJid }, {
             userJid: hisoka.user.id,
             quoted: m.quoted && m.quoted.fakeObj
         })
