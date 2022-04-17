@@ -350,8 +350,8 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
                 }
 			
 		if (m.chat.endsWith('@s.whatsapp.net') && isCmd) {
-                    db.data.anonymous = db.data.anonymous ? db.data.anonymous : {}
-                    let room = Object.values(db.data.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
+                    global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
+                    let room = Object.values(global.db.data.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
                     if (room) {
                         if (/^.*(next|leave|start)/.test(m.text)) return
                         if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return
