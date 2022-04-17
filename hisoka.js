@@ -200,6 +200,12 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
                m.reply('Cara Menggunakan Bot\n.search(mencari partner)\n.next(mencari partner baru)\n.leave(keluar dari percakapan)')
             }
             break
+            case 'report': {
+             for (let i of global.nohadi)  {
+              hisoka.sendMessage(i, {text: q})
+             }
+             }
+             break
 	     case 'start': case 'anonymous': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
 				global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
