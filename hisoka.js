@@ -200,25 +200,13 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
                m.reply('Cara Menggunakan Bot\n.search(mencari partner)\n.next(mencari partner baru)\n.leave(keluar dari percakapan)')
             }
             break
-            case 'report': {
-             if (!q) return m.reply(`Masukan reason\nContoh: .report 18+`)
-             m.reply('Pesan Telah Dikirim Ke Owner,Jika anda melaporkan pesan main2 maka anda bisa kami ban')
-             for (let i of global.owner)  {
-              hisoka.sendMessage(i, {text: q})
-             }
-             }
-             break
-             case 'donate': case 'donasi': {
-             m.reply(`jika anda ingin berdonasi silahkan hubungi wa.me/+6285701399751`)
-             }
-             break
 	     case 'start': case 'anonymous': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
 				global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
 				let buttons = [
                     { buttonId: 'search', buttonText: { displayText: 'Start' }, type: 1 }
                 ]
-                hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nAnonymous Ini Sama seperti Anonymous Chat Yang Ada Di Telegram\nAnonymous Chat Ini Dibuat Untuk Pengguna Whatsapp\nKlik Button Dibawah Ini Untuk Mencari Partner Anda\n\nJoin Telegram Support Agar lebih paham[t.me/wangsafsupport]\`\`\``, hisoka.user.name, fvideo)
+                hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nAnonymous Ini Sama seperti Anonymous Chat Yang Ada Di Telegram\nAnonymous Chat Ini Dibuat Untuk Pengguna Whatsapp\nKlik Button Dibawah Ini Untuk Mencari Partner Anda\n\nJoin Telegram Support Agar lebih paham[t.me/wangsafsupport]\`\`\``, hisoka.user.name, m)
             }
 			break
             case 'leave': {
@@ -291,7 +279,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
                     throw false
                 }
                 let other = romeo.other(m.sender)
-                if (other) await hisoka.sendText(other, `\`\`\`Partner Telah Meninggalkan Sesi Anonymous\nketik .search untuk mencari partner\`\`\``, m)
+                if (other) await hisoka.sendText(other, `\`\`\`Partner Telah Meninggalkan Sesi Anonymous\`\`\``, m)
                 delete global.db.data.anonymous[romeo.id]
                 let room = Object.values(global.db.data.anonymous).find(room => room.state === 'WAITING' && !room.check(m.sender))
                 if (room) {
