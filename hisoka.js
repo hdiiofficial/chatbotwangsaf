@@ -25,14 +25,11 @@ const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, 
 
 module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
     try {
-        const type = Object.keys(m.message)[0]
-        const cmd = (type === 'conversation' && m.message.conversation) ? m.message.conversation : (type == 'imageMessage') && m.message.imageMessage.caption ? m.message.imageMessage.caption : (type == 'documentMessage') && m.message.documentMessage.caption ? m.message.documentMessage.caption : (type == 'videoMessage') && m.message.videoMessage.caption ? m.message.videoMessage.caption : (type == 'extendedTextMessage') && m.message.extendedTextMessage.text ? m.message.extendedTextMessage.text : (type == 'buttonsResponseMessage' && m.message.buttonsResponseMessage.selectedButtonId) ? m.message.buttonsResponseMessage.selectedButtonId : (type == 'templateButtonReplyMessage') && m.message.templateButtonReplyMessage.selectedId ? m.message.templateButtonReplyMessage.selectedId : (type === 'listResponseMessage' && m.message.listResponseMessage.title) ? m.message.listResponseMessage.title : ""
-        var prefix = /^[.^]/.test(cmd) ? cmd.match(/^[.^]/gi) : '.'
-        const body = (type === 'listResponseMessage' && m.message.listResponseMessage.title) ? m.message.listResponseMessage.title : (type === 'buttonsResponseMessage' && m.message.buttonsResponseMessage.selectedButtonId) ? m.message.buttonsResponseMessage.selectedButtonId : (type === 'conversation' && m.message.conversation.startsWith(prefix)) ? m.message.conversation : (type == 'imageMessage') && m.message.imageMessage.caption.startsWith(prefix) ? m.message.imageMessage.caption : (type == 'videoMessage') && m.message.videoMessage.caption.startsWith(prefix) ? m.message.videoMessage.caption : (type == 'extendedTextMessage') && m.message.extendedTextMessage.text.startsWith(prefix) ? m.message.extendedTextMessage.text : ""
-		const budy = (type === 'conversation') ? m.message.conversation : (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : ''
+        var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
+        var budy = (typeof m.text == 'string' ? m.text : '')
+        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
         const isCmd = body.startsWith(prefix)
-        const from = m.key.remoteJid
-        const command = body.startsWith(prefix) && body.replace(prefix, '').trim().toLowerCase()
+        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
         const pushname = m.pushName || "No Name"
         const botNumber = await hisoka.decodeJid(hisoka.user.id)
@@ -156,21 +153,17 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
 	        switch(command) {
 //CAF-ID
 case 'report': case 'lapor': {
-if (!_msg || !m.quoted) throw `Masukkan Laporan Atau Balas Pesan Error Bot Nya.`
-if(m.quoted) {
-if(!m.quoted.isBaileys) throw 'Hanya Bisa Membalas Pesan Bot'
-if(m.quoted.text.toLowerCase().includes('error')) throw 'Anda Tidak Membalas Pesan Error'
-  for (let i of owner) {
-     hisoka.copyNForward(i, quoted.fakeObj)
-  }
-} else { 
-  for (let caf of owner) {
-  hisoka.sendMessage(caf, {text: q}) 
-  }
+const ress = `*[ REPORT MESSAGE ]*\n\n\nCEK REPORT`
+var options = {
+text: ress,
+contextInfo: {mentionedJid: [participants]},
 }
+
+hisoka.sendMessage('6285701399751@s.whatsapp.net', options, text, {quoted: m})
+
+m.reply('#REPORT\n\n\nLAPORAN ANDA TELAH SAMPAI KE OWNER | LAPORAN PALSU ATAU MAIN² AKAN KE KENAI SANKSI.')
 }
 break
-	        
             case 'unblock': {
 		if (!isCreator) throw mess.owner
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
@@ -208,7 +201,7 @@ break
                             }, {
                                 quickReplyButton: {
                                     displayText: 'CARI PARTNER',
-                                    id: 'search'
+                                    id: `${prefix}search`
                                 }
                             }]
                       let txt = `「 Broadcast Bot 」\n\n${text}`
@@ -225,18 +218,18 @@ break
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
 				global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
 				let buttons = [
-                    { buttonId: 'search', buttonText: { displayText: 'Start' }, type: 1 }
+                    { buttonId: `search`, buttonText: { displayText: 'Start' }, type: 1 }
                 ]
                 hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nAnonymous Ini Sama seperti Anonymous Chat Yang Ada Di Telegram\nAnonymous Chat Ini Dibuat Untuk Pengguna Whatsapp\nKlik Button Dibawah Ini Untuk Mencari Partner Anda\n\nJoin Telegram Support Agar lebih paham[t.me/wangsafsupport]\`\`\``, hisoka.user.name, m)
             }
 			break
             case 'leave': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
-                global.db.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
+                global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
                 let room = Object.values(global.db.data.anonymous).find(room => room.check(m.sender))
                 if (!room) {
                     let buttons = [
-                        { buttonId: 'search', buttonText: { displayText: 'Start' }, type: 1 }
+                        { buttonId: `${prefix}search`, buttonText: { displayText: 'Start' }, type: 1 }
                     ]
                     await hisoka.sendButtonText(m.chat, buttons, `\`\`\`Kamu Sedang Tidak Berada Di Sesi Anonymous, Tekan Button Untuk Mencari Partner \`\`\``)
                     throw false
@@ -247,6 +240,7 @@ break
                 delete global.db.data.anonymous[room.id]
                 if (command === 'leave') break
             }
+            break
             case 'mulai': case 'caripartner': case 'search': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
                 global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
@@ -260,8 +254,8 @@ break
                 let room = Object.values(global.db.data.anonymous).find(room => room.state === 'WAITING' && !room.check(m.sender))
                 if (room) {
                     let buttons = [
-                        { buttonId: 'next', buttonText: { displayText: 'Skip' }, type: 1 },
-                        { buttonId: 'leave', buttonText: { displayText: 'Stop' }, type: 1 }
+                        { buttonId: '.next', buttonText: { displayText: 'Skip' }, type: 1 },
+                        { buttonId: '.leave', buttonText: { displayText: 'Stop' }, type: 1 }
                     ]
                     await hisoka.sendButtonText(room.a, buttons, `\`\`\`Berhasil Menemukan Partner, sekarang kamu dapat mengirim pesan\`\`\``, hisoka.user.name, m)
                     room.b = m.sender
@@ -294,7 +288,7 @@ break
                 let romeo = Object.values(global.db.data.anonymous).find(room => room.check(m.sender))
                 if (!romeo) {
                     let buttons = [
-                        { buttonId: 'caripartner', buttonText: { displayText: 'Start' }, type: 1 }
+                        { buttonId: '.search', buttonText: { displayText: 'Start' }, type: 1 }
                     ]
                     await hisoka.sendButtonText(m.chat, buttons, `\`\`\`Kamu Sedang Tidak Berada Di Sesi Anonymous, Tekan Button Untuk Mencari Partner\`\`\``)
                     throw false
@@ -370,24 +364,23 @@ break
                     })
                 }
 			
-		if (m.chat.endsWith('@s.whatsapp.net') && isCmd) {
-                    db.data.anonymous = db.data.anonymous ? db.data.anonymous : {}
-                    let room = Object.values(db.data.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
-                    if (room) {
-                        if (/^.*(next|leave|start)/.test(m.text)) return
-                        if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return
-                        let other = [room.a, room.b].find(user => user !== m.sender)
-                        m.copyNForward(other, true, m.quoted && m.quoted.fromMe ? {
-                            contextInfo: {
-                                ...m.msg.contextInfo,
-                                forwardingScore: 0,
-                                isForwarded: true,
-                                participant: other
-                            }
-                        } : {})
-                    }
-                    return !0
+		if (!m.chat.endsWith('@s.whatsapp.net')) return !0
+        global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
+        let room = Object.values(global.db.data.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
+        if (room) {
+            if (/^.*(next|leave|start|skip)/.test(m.text)) return
+            if (['.next', '.leave', '.start', '.skip', 'Cari Partner', 'Keluar', 'Next'].includes(m.text)) return
+            let other = [room.a, room.b].find(user => user !== m.sender)
+            m.copyNForward(other, true, m.quoted && m.quoted.fromMe ? {
+                contextInfo: {
+                    ...m.msg.contextInfo,
+                    forwardingScore: 1,
+                    isForwarded: true,
+                    participant: other
                 }
+            } : {})
+        }
+        return !0
 			
 		if (isCmd && budy.toLowerCase() != undefined) {
 		    if (m.chat.endsWith('broadcast')) return
