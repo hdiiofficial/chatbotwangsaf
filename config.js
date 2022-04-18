@@ -22,8 +22,8 @@ global.owner = ['6285701399751'] //mau jdi own bilng aj jan gnti disini
 global.premium = ['6285701399751']
 global.packname = 'Anonymous Chat'
 global.author = 'WhatsApp Bot'
-global.sessionName = 'chatbot'
-global.prefa = ['','!','.','🐦','🐤','🗿']
+global.sessionName = 'sesianon'
+global.prefa = ['#','!','.','🐦','🐤','🗿']
 global.sp = '⭔'
 global.mess = {
     success: '✓ Success',
