@@ -234,7 +234,7 @@ case 'ban': {
 				global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
 				let buttons = [
                     { buttonId: 'search', buttonText: { displayText: 'Start' }, type: 1 }, 
-                    { buttonId: 'help', buttonText: { 'Bantuan' }, type: 1 }
+                    { buttonId: 'help', buttonText: { displayText: 'Bantuan' }, type: 1 }
                 ]
                 hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nJika Anda Masih Binggung Menggunakan Bot Ini, Silahkan Klik Button Bantuan Di Bawah Ini.\n\n#NOTE BACA RULES SEBELUM MENGGUNAKAN BOT\n\nJoin Telegram Support[t.me/wangsafsupport]\`\`\``, hisoka.user.name, m)
             }
