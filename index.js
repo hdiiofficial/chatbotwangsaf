@@ -35,9 +35,9 @@ const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream
 
 global.opts = new Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
 global.db = new Low(
-  /https?:\/\//.test('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/BotAnon?retryWrites=true&w=majority' || '') ?
-    new cloudDBAdapter('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/BotAnon?retryWrites=true&w=majority') : /mongodb/.test('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/BotAnon?retryWrites=true&w=majority') ?
-      new mongoDB('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/BotAnon?retryWrites=true&w=majority') :
+  /https?:\/\//.test('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/databaseanon?retryWrites=true&w=majority' || '') ?
+    new cloudDBAdapter('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/databaseanon?retryWrites=true&w=majority') : /mongodb/.test('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/databaseanon?retryWrites=true&w=majority') ?
+      new mongoDB('mongodb+srv://hdiiofficial:HADIgans57@botwangsaf.moy1r.mongodb.net/databaseanon?retryWrites=true&w=majority') :
       new JSONFile(`src/database.json`)
 )
 global.DATABASE = global.db // Backwards Compatibility
