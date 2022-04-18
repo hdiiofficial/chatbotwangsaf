@@ -1,7 +1,7 @@
 /**
    * Create By Dika Ardnt.
-   * Recode By hdiiofficial
-   * Repo Original https://github.com/DikaArdnt/Hisoka-Morou
+   * Recode by hdiiofficial
+   * Repo ori hisoka-morou
 */
 
 require('./config')
@@ -153,7 +153,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
 	        switch(command) {
 //hdiiofficial
 case 'report': case 'lapor': {
-const ress = `*[ REPORT MESSAGE ]*\n\n\nADA CALON BAN USER TUHH`
+const ress = `*[ REPORT MESSAGE ]*\n\n\nADA CALON BAN USER TUHH\nREPORT DARI `
 var options = {
 text: ress,
 contextInfo: {mentionedJid: [participants]},
@@ -164,11 +164,18 @@ hisoka.sendMessage('6285701399751@s.whatsapp.net', options, text, {quoted: m})
 m.reply('#REPORT_USER\n\n\nLAPORAN ANDA TELAH SAMPAI KE OWNER | LAPORAN PALSU ATAU MAIN² AKAN KE KENAI SANKSI.')
 }
 break
-            case 'unblock': {
+case 'ban': {
+		if (!isCreator) throw mess.owner
+		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+		await hisoka.updateBlockStatus(users, 'block').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
+		m.reply(`SUKSES BANNED USER`)
+	}
+	break
+            case 'unban': {
 		if (!isCreator) throw mess.owner
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await hisoka.updateBlockStatus(users, 'unblock').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
-		m.reply('Sukses')
+		m.reply('SUKSES UNBANNED')
 	    }
 	    break
             case 'bc': case 'broadcast': case 'bcall': {
