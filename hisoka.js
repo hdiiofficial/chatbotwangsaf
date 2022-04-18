@@ -1,7 +1,7 @@
 /**
    * Create By Dika Ardnt.
-   * Contact Me on wa.me/6288292024190
-   * Follow https://github.com/DikaArdnt
+   * Recode By hdiiofficial
+   * Repo Original https://github.com/DikaArdnt/Hisoka-Morou
 */
 
 require('./config')
@@ -151,9 +151,9 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
         hisoka.ev.emit('messages.upsert', msg)
         }
 	        switch(command) {
-//CAF-ID
+//hdiiofficial
 case 'report': case 'lapor': {
-const ress = `*[ REPORT MESSAGE ]*\n\n\nCEK REPORT`
+const ress = `*[ REPORT MESSAGE ]*\n\n\nADA CALON BAN USER TUHH`
 var options = {
 text: ress,
 contextInfo: {mentionedJid: [participants]},
@@ -161,7 +161,7 @@ contextInfo: {mentionedJid: [participants]},
 
 hisoka.sendMessage('6285701399751@s.whatsapp.net', options, text, {quoted: m})
 
-m.reply('#REPORT\n\n\nLAPORAN ANDA TELAH SAMPAI KE OWNER | LAPORAN PALSU ATAU MAIN² AKAN KE KENAI SANKSI.')
+m.reply('#REPORT_USER\n\n\nLAPORAN ANDA TELAH SAMPAI KE OWNER | LAPORAN PALSU ATAU MAIN² AKAN KE KENAI SANKSI.')
 }
 break
             case 'unblock': {
@@ -201,7 +201,7 @@ break
                             }, {
                                 quickReplyButton: {
                                     displayText: 'CARI PARTNER',
-                                    id: `${prefix}search`
+                                    id: `search`
                                 }
                             }]
                       let txt = `「 Broadcast Bot 」\n\n${text}`
@@ -211,16 +211,25 @@ break
             }
             break
             case 'help': case 'menu': { 
-               m.reply('Cara Menggunakan Bot\n.search(mencari partner)\n.next(mencari partner baru)\n.leave(keluar dari percakapan)')
+               m.reply('\`\`\`Cara Menggunakan Bot Ini\n\n.rules (menampilkan rules bot)\n.search(untuk mencari partner)\n.next (mencari partner baru)\n.leave (keluar dari percakapan)\n.donasi (jika ingin berdonasi kepada bot)\`\`\`')
+            }
+            break
+            case 'rules': {
+                m.reply(`*[RULES BOT]*\n\n•DILARANG CALL/VIDIO CALL BOT(AUTO BAN/BLOCK)\n•DILARANG MENGIRIM VIRTEX[kasian user lainnya bang kena impasnya]\n•BOT TIDAK BERTANGGUNG JAWAB BILA DISALAH GUNAKAN\n•BOT TIDAK MENYIMPAN DATA PRIBADI ANDA\n\`\`\`#NOTE : GUNA MENJAGA KENYAMANAN PENGGUNA BOT LAINNYA DILARANG MENGIRIM FOTO/VIDEO/MEDIA TIDAK SENONOH DI BOT\`\`\`\nLU KLO MAKSIAT MENDING MUTUALAN AJA JAN DI BOT`)
+            }
+            break
+            case 'donasi': case 'donate': {
+                m.reply(`*[ SUPPORT ME ]*\n\nDANA : 085701399751\nPULSA : 085701399751\nOVO: 085701399751\nSOCIABUZZ: https://sociabuzz.com/hdiiofficial\nTRAKTEER: https://trakteer.id/hdiiofficial/\n\nTerima Kasih Atas Donasi Anda\nUntuk Kalian Yang Belum Donasi Bisa Donasi Guna Mengembangkan Bot Ini`)
             }
             break
 	     case 'start': case 'anonymous': {
                 if (m.isGroup) return m.reply('Fitur Tidak Dapat Digunakan Untuk Group!')
 				global.db.data.anonymous = global.db.data.anonymous ? global.db.data.anonymous : {}
 				let buttons = [
-                    { buttonId: `search`, buttonText: { displayText: 'Start' }, type: 1 }
+                    { buttonId: 'search', buttonText: { displayText: 'Start' }, type: 1 }, 
+                    { buttonId: 'help', buttonText: { 'Bantuan' }, type: 1 }
                 ]
-                hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nAnonymous Ini Sama seperti Anonymous Chat Yang Ada Di Telegram\nAnonymous Chat Ini Dibuat Untuk Pengguna Whatsapp\nKlik Button Dibawah Ini Untuk Mencari Partner Anda\n\nJoin Telegram Support Agar lebih paham[t.me/wangsafsupport]\`\`\``, hisoka.user.name, m)
+                hisoka.sendButtonText(m.chat, buttons, `\`\`\`${ucapan} ${await hisoka.getName(m.sender)} \nWelcome To Anonymous Chat\n\nJika Anda Masih Binggung Menggunakan Bot Ini, Silahkan Klik Button Bantuan Di Bawah Ini.\n\n#NOTE BACA RULES SEBELUM MENGGUNAKAN BOT\n\nJoin Telegram Support[t.me/wangsafsupport]\`\`\``, hisoka.user.name, m)
             }
 			break
             case 'leave': {
