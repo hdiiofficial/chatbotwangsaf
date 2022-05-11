@@ -121,7 +121,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
 	    let setting = global.db.data.settings[botNumber]
 	    if (new Date() * 1 - setting.status > 1000) {
 		let uptime = await runtime(process.uptime())
-		await hisoka.setStatus(`${hisoka.user.name} | Runtime : ${runtime(uptime)}`)
+		await hisoka.setStatus(`Anonymous 1.1.1 aktif sejak ${runtime(process.uptime())} yg lalu`)
 		setting.status = new Date() * 1
 	    }
 	}
@@ -164,21 +164,31 @@ hisoka.sendMessage('6285701399751@s.whatsapp.net', options, text, {quoted: m})
 m.reply('#REPORT_USER\n\n\nLAPORAN ANDA TELAH SAMPAI KE OWNER | LAPORAN PALSU ATAU MAIN² AKAN KE KENAI SANKSI.')
 }
 break
-case 'ban': {
+                case 'setppbot': {
+                if (!isCreator) throw mess.owner
+                if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (!/image/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                if (/webp/.test(mime)) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+                let media = await hisoka.downloadAndSaveMediaMessage(quoted)
+                await hisoka.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media))
+                m.reply(mess.success)
+                }
+                break
+                case 'ban': {
 		if (!isCreator) throw mess.owner
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await hisoka.updateBlockStatus(users, 'block').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 		m.reply(`SUKSES BANNED USER`)
-	}
-	break
-            case 'unban': {
+	        }
+	        break
+                case 'unban': {
 		if (!isCreator) throw mess.owner
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 		await hisoka.updateBlockStatus(users, 'unblock').then((res) => m.reply(jsonformat(res))).catch((err) => m.reply(jsonformat(err)))
 		m.reply('SUKSES UNBANNED')
-	    }
-	    break
-            case 'bc': case 'broadcast': case 'bcall': {
+	        }
+	        break
+                case 'bc': case 'broadcast': case 'bcall': {
                 if (!isCreator) throw mess.owner
                 if (!text) throw `Text mana?\n\nExample : ${prefix + command} teks`
                 let anu = await store.chats.all().map(v => v.id)
@@ -218,7 +228,11 @@ case 'ban': {
             }
             break
             case 'help': case 'menu': { 
-               m.reply('\`\`\`Cara Menggunakan Bot Ini\n\n.rules (menampilkan rules bot)\n.search(untuk mencari partner)\n.next (mencari partner baru)\n.leave (keluar dari percakapan)\n.donasi (jika ingin berdonasi kepada bot)\`\`\`')
+               m.reply('\`\`\`Cara Menggunakan Bot Ini\n\n.rules (menampilkan rules bot)\n.start(untuk memulai bot)\n.search(untuk mencari partner)\n.next (mencari partner baru)\n.leave (keluar dari percakapan)\n.donasi (jika ingin berdonasi kepada bot)\n.report/lapor (text)[melaporkan bug/pelanggar dll]\n.ping(info tentang bot)\`\`\`')
+            }
+            break
+            case 'vps': { 
+                m.reply(`mau vps?ohtidak gratis bng\n\n kalo minat silahkan ketik .owner`)
             }
             break
             case 'rules': {
