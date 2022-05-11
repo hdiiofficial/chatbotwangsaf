@@ -20,7 +20,7 @@ global.APIKeys = {
 // Other
 global.owner = ['6285701399751'] //mau jdi own bilng aj jan gnti disini
 global.premium = ['6285701399751']
-global.packname = 'Anonymous Chat'
+global.packname = 'Anonymous Chat 1.1.1'
 global.author = 'WhatsApp Bot'
 global.sessionName = 'sesianon'
 global.prefa = ['#','!','.','🐦','🐤','🗿']
